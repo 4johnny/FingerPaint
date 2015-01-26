@@ -18,12 +18,9 @@
 # pragma mark Properties
 
 @property (weak, nonatomic) IBOutlet PaintView *paintView;
-
+@property (weak, nonatomic) IBOutlet UIButton *eraseButton;
 @property (weak, nonatomic) IBOutlet UIButton *redButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *greenButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *blueButton;
 
 @end
-

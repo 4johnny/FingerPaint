@@ -17,10 +17,9 @@
 
 # pragma mark Properties
 
+@property (nonatomic) BOOL eraseMode;
 @property (nonatomic) UIColor* currentColor;
-
 @property (nonatomic, readonly) NSMutableArray* pathSequence;
 @property (nonatomic, readonly) NSMutableArray* colorSequence;
-
 
 @end
