@@ -7,9 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PaintView.h"
+
+#
+# pragma mark - Interface
+#
 
 @interface ViewController : UIViewController
 
+# pragma mark Properties
+
+@property (weak, nonatomic) IBOutlet PaintView *paintView;
+
+@property (weak, nonatomic) IBOutlet UIButton *redButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *greenButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *blueButton;
 
 @end
 

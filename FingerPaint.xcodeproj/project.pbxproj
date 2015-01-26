@@ -14,6 +14,7 @@
 		B28D0D091A75E30500060EA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B28D0D081A75E30500060EA5 /* Images.xcassets */; };
 		B28D0D0C1A75E30500060EA5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B28D0D0A1A75E30500060EA5 /* LaunchScreen.xib */; };
 		B28D0D181A75E30500060EA5 /* FingerPaintTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B28D0D171A75E30500060EA5 /* FingerPaintTests.m */; };
+		B2DFD1761A75FDF500DA880C /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2DFD1751A75FDF500DA880C /* PaintView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		B28D0D161A75E30500060EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B28D0D171A75E30500060EA5 /* FingerPaintTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FingerPaintTests.m; sourceTree = "<group>"; };
 		B28D0D211A75E33800060EA5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		B2DFD1741A75FDF500DA880C /* PaintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintView.h; sourceTree = "<group>"; };
+		B2DFD1751A75FDF500DA880C /* PaintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +85,8 @@
 		B28D0CFA1A75E30500060EA5 /* FingerPaint */ = {
 			isa = PBXGroup;
 			children = (
+				B2DFD1741A75FDF500DA880C /* PaintView.h */,
+				B2DFD1751A75FDF500DA880C /* PaintView.m */,
 				B28D0D021A75E30500060EA5 /* ViewController.h */,
 				B28D0D031A75E30500060EA5 /* ViewController.m */,
 				B28D0D051A75E30500060EA5 /* Main.storyboard */,
@@ -222,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B28D0D041A75E30500060EA5 /* ViewController.m in Sources */,
+				B2DFD1761A75FDF500DA880C /* PaintView.m in Sources */,
 				B28D0D011A75E30500060EA5 /* AppDelegate.m in Sources */,
 				B28D0CFE1A75E30500060EA5 /* main.m in Sources */,
 			);
@@ -420,6 +426,7 @@
 				B28D0D1D1A75E30500060EA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B28D0D1E1A75E30500060EA5 /* Build configuration list for PBXNativeTarget "FingerPaintTests" */ = {
 			isa = XCConfigurationList;
@@ -428,6 +435,7 @@
 				B28D0D201A75E30500060EA5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
