@@ -40,6 +40,7 @@
 		B28D0D111A75E30500060EA5 /* FingerPaintTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FingerPaintTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B28D0D161A75E30500060EA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B28D0D171A75E30500060EA5 /* FingerPaintTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FingerPaintTests.m; sourceTree = "<group>"; };
+		B28D0D211A75E33800060EA5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,13 +82,9 @@
 		B28D0CFA1A75E30500060EA5 /* FingerPaint */ = {
 			isa = PBXGroup;
 			children = (
-				B28D0CFF1A75E30500060EA5 /* AppDelegate.h */,
-				B28D0D001A75E30500060EA5 /* AppDelegate.m */,
 				B28D0D021A75E30500060EA5 /* ViewController.h */,
 				B28D0D031A75E30500060EA5 /* ViewController.m */,
 				B28D0D051A75E30500060EA5 /* Main.storyboard */,
-				B28D0D081A75E30500060EA5 /* Images.xcassets */,
-				B28D0D0A1A75E30500060EA5 /* LaunchScreen.xib */,
 				B28D0CFB1A75E30500060EA5 /* Supporting Files */,
 			);
 			path = FingerPaint;
@@ -96,8 +93,13 @@
 		B28D0CFB1A75E30500060EA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B28D0D081A75E30500060EA5 /* Images.xcassets */,
+				B28D0D0A1A75E30500060EA5 /* LaunchScreen.xib */,
+				B28D0CFF1A75E30500060EA5 /* AppDelegate.h */,
+				B28D0D001A75E30500060EA5 /* AppDelegate.m */,
 				B28D0CFC1A75E30500060EA5 /* Info.plist */,
 				B28D0CFD1A75E30500060EA5 /* main.m */,
+				B28D0D211A75E33800060EA5 /* PrefixHeader.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -286,6 +288,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/FingerPaint/PrefixHeader.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -327,6 +331,8 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/FingerPaint/PrefixHeader.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
