@@ -17,6 +17,7 @@
 
 # pragma mark Properties
 
+@property (nonatomic) CGContextRef graphicsContext;
 @property (nonatomic) BOOL eraseMode;
 @property (nonatomic) UIColor* currentColor;
 @property (nonatomic, readonly) NSMutableArray* pathSequence;

@@ -44,6 +44,8 @@
 		[self.colorSequence[i] setStroke];
 		[self.pathSequence[i] stroke];
 	}
+	
+	self.graphicsContext = UIGraphicsGetCurrentContext();
 }
 
 
