@@ -13,8 +13,10 @@
 # pragma mark - Constants
 #
 
-#define INIT_COLOR	redColor
-#define INIT_WIDTH	1
+#define INIT_COLOR		redColor
+#define INIT_WIDTH		5
+#define INIT_CAP_STYLE	kCGLineCapRound
+#define INIT_JOIN_STYLE	kCGLineJoinRound
 
 
 #
@@ -54,9 +56,13 @@
 	MDLog(@"Touches Began");
 	
 	// Create new bezier path & capture current color setting.
+
 	UIBezierPath* path = [UIBezierPath bezierPath];
 	path.lineWidth = INIT_WIDTH;
+	path.lineCapStyle = INIT_CAP_STYLE;
+	path.lineJoinStyle = INIT_JOIN_STYLE;
 	[path moveToPoint:[[touches anyObject] locationInView:self.paintView]];
+	
 	[self.paintView.pathSequence addObject:path];
 	[self.paintView.colorSequence addObject:self.paintView.currentColor];
 	[self.paintView setNeedsDisplay];
