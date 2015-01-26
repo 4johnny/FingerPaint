@@ -13,10 +13,13 @@
 # pragma mark - Constants
 #
 
+#define DEFAULT_FLATNESS	0.6
+
 #define INIT_COLOR		redColor
 #define INIT_WIDTH		5
 #define INIT_CAP_STYLE	kCGLineCapRound
 #define INIT_JOIN_STYLE	kCGLineJoinRound
+#define INIT_FLATNESS	0.0001
 
 
 #
@@ -61,6 +64,7 @@
 	path.lineWidth = INIT_WIDTH;
 	path.lineCapStyle = INIT_CAP_STYLE;
 	path.lineJoinStyle = INIT_JOIN_STYLE;
+	path.flatness = INIT_FLATNESS;
 	[path moveToPoint:[[touches anyObject] locationInView:self.paintView]];
 	
 	[self.paintView.pathSequence addObject:path];
