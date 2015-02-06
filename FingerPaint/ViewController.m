@@ -13,12 +13,12 @@
 # pragma mark - Constants
 #
 
-#define DEFAULT_FLATNESS	0.6
+#define TOUCH_OFFSET	7 // Points
 
 #define INIT_ERASE_MODE	NO
 
+#define INIT_WIDTH		5 // Points
 #define INIT_COLOR		redColor
-#define INIT_WIDTH		5
 #define INIT_CAP_STYLE	kCGLineCapRound
 #define INIT_JOIN_STYLE	kCGLineJoinRound
 #define INIT_FLATNESS	0.0001
@@ -69,7 +69,7 @@
 		path.lineCapStyle = INIT_CAP_STYLE;
 		path.lineJoinStyle = INIT_JOIN_STYLE;
 		path.flatness = INIT_FLATNESS;
-		[path moveToPoint:[[touches anyObject] locationInView:self.paintView]];
+		[path moveToPoint:[self touchPointWithTouches:touches]];
 		
 		[self.paintView.pathSequence addObject:path];
 		[self.paintView.colorSequence addObject:self.paintView.currentColor];
@@ -78,48 +78,42 @@
 	}
 }
 
+
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 	MDLog(@"Touches Moved");
 	
+	CGPoint touchPoint = [self touchPointWithTouches:touches];
+
 	if (!self.paintView.eraseMode) {
 		
 		// Add current touch location to existing path.
-		[self.paintView.pathSequence.lastObject addLineToPoint:[[touches anyObject] locationInView:self.paintView]];
-		
+		MDLog(@"Draw: %.f,%.f", touchPoint.x, touchPoint.y);
+		[self.paintView.pathSequence.lastObject addLineToPoint:touchPoint];
 		[self.paintView setNeedsDisplay];
 	}
 }
 
+
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 	MDLog(@"Touches Ended");
+
+	CGPoint touchPoint = [self touchPointWithTouches:touches];
 	
 	if (!self.paintView.eraseMode) {
 		
-		// Add current touch location to existing path.
-		[self.paintView.pathSequence.lastObject addLineToPoint:[[touches anyObject] locationInView:self.paintView]];
-		
-		
+		// Add current touch point to existing path.
+		MDLog(@"Draw: %.f,%.f", touchPoint.x, touchPoint.y);
+		[self.paintView.pathSequence.lastObject addLineToPoint:touchPoint];
+
 	} else { // erase mode
-		
-		// Hit-test final touch location against sequence of paths.
-		// Remove any paths that hit from the sequence.
-		CGPoint touchLocation = [[touches anyObject] locationInView:self.paintView];
-		UIGraphicsPushContext(self.paintView.graphicsContext);
-	
-		for (int i = 0; i < self.paintView.pathSequence.count; i++) {
-			UIBezierPath* path = self.paintView.pathSequence[i];
-			if ([self containsPoint:touchLocation onPath:path inFillArea:NO]) {
-				MDLog(@"Erase hit");
-				[self.paintView.pathSequence removeObject:path];
-				[self.paintView.colorSequence removeObjectAtIndex:i];
-			}
-		}
-			
-		UIGraphicsPopContext();
+
+		// Erase most recent path close to touch point
+		[self erasePathWithTouchPoint:touchPoint];
 	}
 	
 	[self.paintView setNeedsDisplay];
 }
+
 
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
 	MDLog(@"Touches Cancelled");
@@ -161,22 +155,74 @@
 # pragma mark - Helpers
 #
 
+
+- (CGPoint)touchPointWithTouches:(NSSet*)touches {
+	
+	return [[touches anyObject] locationInView:self.paintView];
+}
+
+
+- (void)erasePathWithTouchPoint:(CGPoint)touchPoint {
+	
+	// Hit-test touch point against sequence of paths.
+	// Remove most-recent path that hits from the sequence.
+	UIGraphicsPushContext(self.paintView.graphicsContext);
+	for (int i = (int)self.paintView.pathSequence.count - 1; i >= 0; i--) {
+		
+		UIBezierPath* path = self.paintView.pathSequence[i];
+		if ([ViewController containsTouch:touchPoint onPath:path inFillArea:NO]) {
+			
+			MDLog(@"Erase hit");
+			[self.paintView.pathSequence removeObject:path];
+			[self.paintView.colorSequence removeObjectAtIndex:i];
+			break;
+		}
+	}
+	UIGraphicsPopContext();
+}
+
+
++ (BOOL)containsTouch:(CGPoint)point onPath:(UIBezierPath*)path inFillArea:(BOOL)inFill {
+	
+	// Check if touch point is within threshold distance of current point
+	// NOTE: Handles case where Bezier path contains only a single point
+	MDLog(@"Hit test: %.f,%.f", point.x, point.y);
+	if (sqrt(pow(path.currentPoint.x - point.x, 2) + pow(path.currentPoint.y - point.y, 2)) < TOUCH_OFFSET) return YES;
+	
+	// Try all points in multi-point square centered on given point (since points are small)
+	
+	int touchWidth = TOUCH_OFFSET * 2 + 1;
+	int pointsCount = pow(touchWidth, 2);
+	CGPoint points[pointsCount];
+	
+	int i = 0;
+	for (int y = point.y - TOUCH_OFFSET; y <= point.y + TOUCH_OFFSET; y++) {
+		for (int x = point.x - TOUCH_OFFSET; x <= point.x + TOUCH_OFFSET; x++) {
+			points[i++] = CGPointMake(x, y);
+		}
+	}
+	
+	return [ViewController containsPoints:points ofCount:pointsCount onPath:path inFillArea:inFill];
+}
+
+
 //
 // Source: Apple Dev Docs, "Doing Hit-Detection on a Path"
 //
 // https://developer.apple.com/library/ios/documentation/2DDrawing/Conceptual/DrawingPrintingiOS/BezierPaths/BezierPaths.html#//apple_ref/doc/uid/TP40010156-CH11-SW15
 //
-- (BOOL)containsPoint:(CGPoint)point onPath:(UIBezierPath *)path inFillArea:(BOOL)inFill {
-
++ (BOOL)containsPoints:(CGPoint[])points ofCount:(int)pointsCount onPath:(UIBezierPath *)path inFillArea:(BOOL)inFill {
+	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGPathRef cgPath = path.CGPath;
-	BOOL    isHit = NO;
+	
+	BOOL isHit = NO;
  
 	// Determine the drawing mode to use. Default to
 	// detecting hits on the stroked portion of the path.
 	CGPathDrawingMode mode = kCGPathStroke;
-	if (inFill)
-	{
+	if (inFill) {
+		
 		// Look for hits in the fill area of the path instead.
 		if (path.usesEvenOddFillRule)
 			mode = kCGPathEOFill;
@@ -190,7 +236,14 @@
 	CGContextAddPath(context, cgPath);
  
 	// Do the hit detection.
-	isHit = CGContextPathContainsPoint(context, point, mode);
+	for (int i = 0; i < pointsCount; i++) {
+		MDLog(@"Hit test: %.f,%.f", points[i].x, points[i].y);
+		
+		if (CGContextPathContainsPoint(context, points[i], mode)) {
+			isHit = TRUE;
+			break;
+		}
+	}
  
 	CGContextRestoreGState(context);
  

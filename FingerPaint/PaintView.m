@@ -36,7 +36,7 @@
 
 - (void)drawRect:(CGRect)rect {
 
-	MDLog(@"PaintView Draw Rect");
+	// MDLog(@"PaintView Draw Rect");
 
 	// For each path, set color in graphics context, and stroke.
 	for (int i = 0; i < self.pathSequence.count; i++) {
